@@ -1,55 +1,64 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+  /* Original Color Palette */
+  --color-bg: #0f172a;
+  /* Slate 900 */
+  --color-surface: #1e293b;
+  /* Slate 800 */
+  --color-border: #334155;
+  /* Slate 700 */
+  --color-text: #f8fafc;
+  /* Slate 50 */
+  --color-text-muted: #94a3b8;
+  /* Slate 400 */
 
   /* Team Colors */
-  --team-a-primary: #2563eb;
-  --team-a-light: #dbeafe;
-  --team-b-primary: #dc2626;
-  --team-b-light: #fecaca;
+  --team-a: #2563eb;
+  /* Blue 600 */
+  --team-a-light: #3b82f6;
+  /* Blue 500 */
+  --team-b: #dc2626;
+  /* Red 600 */
+  --team-b-light: #ef4444;
+  /* Red 500 */
+
+  /* Accent */
   --accent: #eab308;
+  /* Yellow 500 */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-/* Force dark mode */
 html {
   color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* Prevent pull-to-refresh on mobile */
   overscroll-behavior: none;
-
-  /* Prevent text selection on score areas */
   -webkit-user-select: none;
   user-select: none;
-
-  /* Prevent double-tap zoom */
   touch-action: manipulation;
 }
 
-/* Custom Animations */
+/* Animations */
 @keyframes score-pop {
   0% {
     transform: scale(1);
   }
 
   50% {
-    transform: scale(1.15);
+    transform: scale(1.12);
   }
 
   100% {
@@ -57,35 +66,15 @@ body {
   }
 }
 
-@keyframes celebration {
+@keyframes pulse-soft {
 
   0%,
   100% {
-    transform: rotate(-3deg) scale(1);
-  }
-
-  25% {
-    transform: rotate(3deg) scale(1.05);
+    opacity: 1;
   }
 
   50% {
-    transform: rotate(-3deg) scale(1.1);
-  }
-
-  75% {
-    transform: rotate(3deg) scale(1.05);
-  }
-}
-
-@keyframes pulse-glow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
-  }
-
-  50% {
-    box-shadow: 0 0 40px rgba(234, 179, 8, 0.6);
+    opacity: 0.7;
   }
 }
 
@@ -97,13 +86,13 @@ body {
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
-@keyframes confetti-fall {
+@keyframes confetti {
   0% {
-    transform: translateY(-100vh) rotate(0deg);
+    transform: translateY(0) rotate(0deg);
     opacity: 1;
   }
 
@@ -113,73 +102,65 @@ body {
   }
 }
 
-.score-animate {
+.animate-score-pop {
   animation: score-pop 0.3s ease-out;
 }
 
-.celebrate {
-  animation: celebration 0.5s ease-in-out;
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
 }
 
-.pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.float {
+.animate-float {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Smooth transitions for all interactive elements */
-button,
-[role="button"] {
-  transition: all 0.2s ease-out;
-}
-
-button:active:not(:disabled),
-[role="button"]:active:not(:disabled) {
-  transform: scale(0.95);
-}
-
-/* Large touch targets for mobile */
+/* Touch targets */
 @media (max-width: 768px) {
 
   button,
   [role="button"],
   input[type="button"],
   input[type="submit"] {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    min-width: 48px;
   }
 }
 
-/* Custom scrollbar */
+/* Prevent iOS zoom on input focus */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* Focus styles for accessibility */
+/* Focus visible */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-/* Input styles */
-input[type="text"] {
-  font-size: 16px;
-  /* Prevents zoom on iOS */
+/* Safe area for mobile */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
 }
