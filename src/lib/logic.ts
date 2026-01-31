@@ -4,7 +4,7 @@ export const MAX_POINTS = 21;
 export const MAX_DEUCE_POINTS = 30;
 export const SETS_TO_WIN = 2;
 
-export type GameState = 'PLAYING' | 'DEUCE' | 'GAME_POINT' | 'MATCH_POINT' | 'WINNER';
+export type GameState = 'PLAYING' | 'DEUCE' | 'FINAL_POINT' | 'GAME_POINT' | 'MATCH_POINT' | 'WINNER';
 export type MatchType = 'mens_singles' | 'womens_singles' | 'mens_doubles' | 'womens_doubles' | 'mixed_doubles';
 
 // เช็คสถานะเกมปัจจุบัน
@@ -21,6 +21,11 @@ export const checkGameState = (
     // กรณีชนะขาด (ถึง 30 หรือ ถึง 21 แล้วห่าง 2 แต้ม)
     if (maxScore >= 30 || (maxScore >= MAX_POINTS && diff >= 2)) {
         return 'WINNER';
+    }
+
+    // กรณี 29-29 (Final Point - ใครได้ 30 ชนะทันที)
+    if (scoreA === 29 && scoreB === 29) {
+        return 'FINAL_POINT';
     }
 
     // กรณี Deuce (20-20 ขึ้นไป)

@@ -53,38 +53,56 @@ export default function BadmintonScoreboard() {
   const currentSet = store.playerA.setsWon + store.playerB.setsWon + 1;
 
   return (
-    <main className="h-[100dvh] w-full flex flex-col bg-slate-900 text-white overflow-hidden relative">
+    <main className="h-[100dvh] w-full flex flex-col text-white overflow-hidden relative">
+
+      {/* Background Image - Full Page */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('/image/badminton.jpg')` }}
+      />
+      <div className="absolute inset-0 bg-black/30" />
 
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 bg-slate-800 border-b border-slate-700 relative z-20 safe-area-top">
-        {/* Left: Match Info */}
-        <div className="flex items-center gap-2">
-          <span className="text-yellow-400 font-bold text-lg">🏸</span>
-          <span className="text-sm text-slate-400 hidden sm:inline">
-            {getMatchTypeName(store.matchType)}
-          </span>
-        </div>
-
-        {/* Center: Alert Banner */}
-        <AlertBanner gameState={gameState} />
-
-        {/* Right: Set Score */}
-        <div className="flex items-center gap-3">
-          <div className="text-right hidden md:block">
-            <span className="text-xs text-slate-500 block">SET</span>
-            <span className="text-sm font-bold">{currentSet}/3</span>
-          </div>
-          <div className="flex gap-1">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${store.playerA.setsWon > 0 ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-500'
-              }`}>
-              {store.playerA.setsWon}
+      <header className="px-4 pt-6 pb-3 bg-slate-900/50 backdrop-blur-sm border-b border-white/10 relative z-20 safe-area-top">
+        {/* Top Row: Match Info + Set Score */}
+        <div className="flex items-center justify-between">
+          {/* Left: Logo + Match Type */}
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-lg">🏸</span>
             </div>
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${store.playerB.setsWon > 0 ? 'bg-red-600 text-white' : 'bg-slate-700 text-slate-500'
-              }`}>
-              {store.playerB.setsWon}
+            <div>
+              <p className="text-xs text-slate-500">ประเภท</p>
+              <p className="text-sm font-semibold text-white">{getMatchTypeName(store.matchType)}</p>
             </div>
           </div>
+
+          {/* Right: Set Score */}
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <p className="text-xs text-slate-500">เกมที่</p>
+              <p className="text-sm font-bold text-white">{currentSet}/3</p>
+            </div>
+            <div className="flex items-center gap-1 bg-slate-900/50 p-1.5 rounded-xl">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${store.playerA.setsWon > 0 ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-slate-700 text-slate-500'
+                }`}>
+                {store.playerA.setsWon}
+              </div>
+              <span className="text-slate-600 text-xs px-0.5">:</span>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${store.playerB.setsWon > 0 ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' : 'bg-slate-700 text-slate-500'
+                }`}>
+                {store.playerB.setsWon}
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Bottom Row: Alert Banner (when active) */}
+        {(gameState !== 'PLAYING' && gameState !== 'WINNER') && (
+          <div className="flex justify-center mt-3">
+            <AlertBanner gameState={gameState} />
+          </div>
+        )}
       </header>
 
       {/* Score Area */}
@@ -121,19 +139,34 @@ export default function BadmintonScoreboard() {
         />
       </div>
 
-      {/* Game Winner Modal */}
-      {gameState === 'WINNER' && !matchWinner && (
-        <GameWinnerModal
-          winnerName={gameWinner === 'A' ? store.playerA.name : store.playerB.name}
-          winnerColor={gameWinner === 'A' ? 'blue' : 'red'}
-          scoreA={store.playerA.score}
-          scoreB={store.playerB.score}
-          currentSet={currentSet}
-          onNextSet={handleNextSet}
-        />
+      {/* Game Winner Modal - only show if NOT a match-winning game */}
+      {gameState === 'WINNER' && !matchWinner && gameWinner && (
+        // Check if this game win would give match win
+        (gameWinner === 'A' ? store.playerA.setsWon : store.playerB.setsWon) < 1 ? (
+          <GameWinnerModal
+            winnerName={gameWinner === 'A' ? store.playerA.name : store.playerB.name}
+            winnerColor={gameWinner === 'A' ? 'blue' : 'red'}
+            scoreA={store.playerA.score}
+            scoreB={store.playerB.score}
+            currentSet={currentSet}
+            onNextSet={handleNextSet}
+          />
+        ) : (
+          // This game win gives match win - show MatchWinnerModal directly
+          <MatchWinnerModal
+            winnerName={gameWinner === 'A' ? store.playerA.name : store.playerB.name}
+            winnerColor={gameWinner === 'A' ? 'blue' : 'red'}
+            finalSetsA={gameWinner === 'A' ? store.playerA.setsWon + 1 : store.playerA.setsWon}
+            finalSetsB={gameWinner === 'B' ? store.playerB.setsWon + 1 : store.playerB.setsWon}
+            gameScores={store.gameScores}
+            currentGameScore={{ scoreA: store.playerA.score, scoreB: store.playerB.score }}
+            onNewMatch={() => store.resetMatch()}
+            onBackToSetup={() => store.backToSetup()}
+          />
+        )
       )}
 
-      {/* Match Winner Modal */}
+      {/* Match Winner Modal - for when match is already won (after confirmSetWin) */}
       {matchWinner && (
         <MatchWinnerModal
           winnerName={matchWinner === 'A' ? store.playerA.name : store.playerB.name}
@@ -148,7 +181,7 @@ export default function BadmintonScoreboard() {
       )}
 
       {/* Footer Controls */}
-      <footer className="bg-slate-800 px-4 py-3 border-t border-slate-700 safe-area-bottom">
+      <footer className="bg-slate-900/50 backdrop-blur-sm px-4 py-3 border-t border-white/10 relative z-20 safe-area-bottom">
         <div className="flex justify-center gap-3 md:gap-6 max-w-lg mx-auto">
           {/* Undo */}
           <button
@@ -198,8 +231,7 @@ export default function BadmintonScoreboard() {
         </div>
 
         {/* Hint */}
-        <p className="text-center text-[10px] text-slate-600 mt-2 flex items-center justify-center gap-1">
-          <Smartphone className="w-3 h-3" />
+        <p className="text-center text-[15px] text-slate-600 mt-2 flex items-center justify-center gap-1">
           กดบริเวณสีเพื่อเพิ่มคะแนน
         </p>
       </footer>

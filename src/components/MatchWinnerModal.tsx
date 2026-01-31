@@ -28,7 +28,11 @@ export default function MatchWinnerModal({
     onNewMatch,
     onBackToSetup
 }: MatchWinnerModalProps) {
-    const allGameScores = [...gameScores, currentGameScore];
+    // Only include current game if it has actual scores (not 0-0)
+    const hasCurrentGameScore = currentGameScore.scoreA > 0 || currentGameScore.scoreB > 0;
+    const allGameScores = hasCurrentGameScore
+        ? [...gameScores, currentGameScore]
+        : gameScores;
 
     return (
         <div className="absolute inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-hidden">

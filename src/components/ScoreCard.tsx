@@ -75,8 +75,8 @@ export default function ScoreCard({
                             <div
                                 key={i}
                                 className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${i < sets
-                                        ? 'bg-yellow-400 scale-100'
-                                        : 'bg-white/20 scale-75'
+                                    ? 'bg-yellow-400 scale-100'
+                                    : 'bg-white/20 scale-75'
                                     }`}
                             />
                         ))}
@@ -104,24 +104,24 @@ export default function ScoreCard({
             </div>
 
             {/* Serve Side Indicator */}
-            <div className="relative z-10 w-full flex justify-between items-center text-xs md:text-sm font-bold uppercase text-white/60">
+            <div className="relative z-10 w-full flex justify-between items-center text-xs md:text-sm font-bold text-white/60">
                 <div className={`flex items-center gap-1.5 px-2 py-1 rounded-lg transition-all ${isServing && serveSide === 'LEFT' ? 'bg-white/20 text-white' : ''
                     }`}>
                     <div className={`w-2 h-2 rounded-full ${isServing && serveSide === 'LEFT' ? accentColor : 'bg-white/30'
                         }`} />
-                    <span>L</span>
+                    <span>ซ้าย</span>
                 </div>
 
                 {isServing && (
                     <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full animate-pulse">
                         <div className="w-2 h-2 rounded-full bg-green-400" />
-                        <span className="text-white">SERVE</span>
+                        <span className="text-white">เสิร์ฟ</span>
                     </div>
                 )}
 
                 <div className={`flex items-center gap-1.5 px-2 py-1 rounded-lg transition-all ${isServing && serveSide === 'RIGHT' ? 'bg-white/20 text-white' : ''
                     }`}>
-                    <span>R</span>
+                    <span>ขวา</span>
                     <div className={`w-2 h-2 rounded-full ${isServing && serveSide === 'RIGHT' ? accentColor : 'bg-white/30'
                         }`} />
                 </div>

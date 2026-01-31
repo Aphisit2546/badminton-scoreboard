@@ -17,17 +17,22 @@ export default function AlertBanner({ gameState }: AlertBannerProps) {
         emoji: string;
     }> = {
         DEUCE: {
-            text: 'DEUCE',
+            text: 'คะแนนเสมอกัน(ต้องทำแต้มนำ 2 คะแนน ถึงจะชนะเกม)',
             bgClass: 'bg-orange-500',
             emoji: '⚡'
         },
+        FINAL_POINT: {
+            text: '29-29 ใครได้แต้มที่ 30 ชนะทันที!',
+            bgClass: 'bg-purple-600',
+            emoji: '🏆'
+        },
         GAME_POINT: {
-            text: 'GAME POINT',
+            text: 'กำลังจะชนะเกม',
             bgClass: 'bg-green-500',
             emoji: '🎯'
         },
         MATCH_POINT: {
-            text: 'MATCH POINT',
+            text: 'กำลังจะชนะแมทช์',
             bgClass: 'bg-red-500',
             emoji: '🔥'
         }

@@ -50,11 +50,13 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
     return (
         <div className="min-h-[100dvh] bg-slate-900 flex flex-col relative overflow-hidden">
 
-            {/* Background Gradient */}
-            <div className="absolute inset-0">
-                <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600 rounded-full blur-[200px] opacity-10" />
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-600 rounded-full blur-[200px] opacity-10" />
-            </div>
+            {/* Background Image */}
+            <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url('/image/badminton.jpg')` }}
+            />
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-black/70" />
 
             {/* Main Content */}
             <div className="relative z-10 flex-1 flex flex-col px-5 py-8 max-w-lg mx-auto w-full">

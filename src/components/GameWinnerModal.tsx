@@ -30,7 +30,7 @@ export default function GameWinnerModal({
                 </div>
 
                 {/* Title */}
-                <p className="text-slate-500 text-sm mb-1">Game {currentSet} Winner</p>
+                <p className="text-slate-500 text-sm mb-1">ชนะเกมที่ {currentSet}</p>
                 <h1 className={`text-2xl font-black mb-4 ${winnerColor === 'blue' ? 'text-blue-600' : 'text-red-600'
                     }`}>
                     {winnerName}
@@ -38,7 +38,7 @@ export default function GameWinnerModal({
 
                 {/* Score */}
                 <div className="bg-slate-100 rounded-xl p-4 mb-6">
-                    <p className="text-slate-500 text-xs mb-1">Game Score</p>
+                    <p className="text-slate-500 text-xs mb-1">คะแนนเกม</p>
                     <p className="text-3xl font-black">
                         <span className="text-blue-600">{scoreA}</span>
                         <span className="text-slate-400 mx-2">-</span>
